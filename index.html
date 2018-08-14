@@ -10,7 +10,24 @@
 		<script type="text/javascript" src="widgets/widget.tabs.js"></script>
 	</head>
   <body>
-	<div id="vue">
+	<div id="vue" v-bind:class="{ app: view !== 'welcome' }">
+		<div class="welcome">
+			<div class="center">
+				<img class="logo" src="images/logo.png">
+				<div class="message">
+					<h1>Welcome</h1>
+					<p>Un mago nunca llega tarde, ni pronto: llega exactamente cuando se lo propone</p>
+				</div>
+				<div class="login-form">
+					<div class="error"></div>
+					<div><input type="text" name="user" placeholder="example@mail.com"></div>
+					<div><input type="password" name="pass" placeholder="password"></div>
+					<div class="captcha"></div>
+					<div><input type="text" name="captcha" placeholder="captcha"></div>
+					<button>Entrar</button>
+				</div>
+			</div>
+		</div>
 		<aside>
 			<div class="logo">
 				<img src="images/logo.png">
@@ -22,17 +39,6 @@
 			</nav>
 		</aside>
 		<main>
-			<div class="login">
-				<div class="center">
-					<img class="logo" src="images/logo.png">
-					<div class="error"></div>
-					<div><input type="text" name="user" placeholder="example@mail.com"></div>
-					<div><input type="password" name="pass" placeholder="password"></div>
-					<div class="captcha"></div>
-					<div><input type="text" name="captcha" placeholder="captcha"></div>
-					<button>Entrar</button>
-				</div>
-			</div>
 			<div class="v-ribbon" v-html="ribbon" v-bind:class="{ 'ribbon-in': ribbon !== '','ribbon-out': ribbon === '' }"></div>
 			<div class="v-player">
 				<!--<video class="v-player" src="http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4"></video>-->
@@ -122,7 +128,7 @@
 				username: '',
 				menu: false,
 				ribbon: '',
-				view: '',
+				view: 'welcome',
 				titles: [],
 				media: {
 					src: '',

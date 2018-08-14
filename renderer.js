@@ -334,35 +334,34 @@
 
 
 	webview.addEventListener('dom-ready', () => {
-_plusdede.frame_show();
+		_plusdede.frame_hide();
+		//_plusdede.frame_show();
 		//alert(!!webview.src.match(/plusdede\.com\/series\/following/));
 		switch (true) {
 			case !!webview.src.match(/plusdede\.com\/series\/following/):
 			case !!webview.src.match(/plusdede\.com\/pelis/):
 				localStorage.setItem('webview-src',webview.src);
-				_plusdede.frame_hide();
 				_plusdede.parse_titles();
 				break;
 			case !!webview.src.match(/plusdede.com\/serie\/[^\/]+$/):
 			case !!webview.src.match(/plusdede.com\/peli\/[^\/]+$/):
 				localStorage.setItem('webview-src',webview.src);
-				_plusdede.frame_hide();
 				_plusdede.parse_media();
 				break;
 			case !!webview.src.match(/plusdede.com\/aportes\/[^\/]+\/[^\/]+$/):
-				_plusdede.frame_hide();
 				_plusdede.parse_links();
 				break;
+			case !!webview.src.match(/plusdede.com\/aportes\/[^\/]+$/):
+				_plusdede.parse_link();
 			case !!webview.src.match(/plusdede.com\/login/):
-				_plusdede.frame_hide();
 				_plusdede.parse_login();
 				break;
-			case !!webview.src.match(/plusdede.com\/aportes\/[^\/]+$/):
-				_plusdede.frame_hide();
-				_plusdede.parse_link();
+			case !!webview.src.match(/plusdede.com\/$/):
+				_vue.view = 'main';
+				break;
 			default:
 				_plusdede.frame_show();
-				//alert(webview.src);
+				console.log('loaded ' + webview.src);
 		}
 	});
 	webview.addEventListener('did-navigate-in-page', (e) => {

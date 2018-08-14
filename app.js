@@ -8,10 +8,10 @@
 		this._v_player = document.querySelector('.v-player');
 
 		this._login = {};
-		this._login.mail    = document.querySelector('.login input[name="user"]');
-		this._login.pass    = document.querySelector('.login input[name="pass"]');
-		this._login.captcha = document.querySelector('.login input[name="captcha"]');
-		this._login.btn     = document.querySelector('.login button');
+		this._login.mail    = document.querySelector('.login-form input[name="user"]');
+		this._login.pass    = document.querySelector('.login-form input[name="pass"]');
+		this._login.captcha = document.querySelector('.login-form input[name="captcha"]');
+		this._login.btn     = document.querySelector('.login-form button');
 		this._login.btn.addEventListener('click',function(){
 			this.do_login();
 		}.bind(this));

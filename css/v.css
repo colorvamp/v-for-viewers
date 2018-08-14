@@ -25,12 +25,17 @@ progress::-webkit-progress-value{background:#f25d63;}
 #vue > aside > nav{}
 #vue > aside > nav > div{padding:10px 20px;cursor:pointer;}
 #vue > aside > nav > div.active{background:#2e3745;color:#f83745;}
-#vue.login > main .login{display:block;z-index:2000;}
-#vue > main .login{position:absolute;height:100%;width:100%;background:#2e3745;display:none;}
-#vue > main .login .center{max-width:300px;margin:auto;margin-top:140px;}
-#vue > main .login .center .logo{display:block;max-width:80px;margin:auto;margin-bottom:20px;}
-#vue > main .login .center .captcha{height:80px;}
-#vue > main .login .center > div{margin-bottom:10px;}
+#vue .welcome{position:absolute;height:100%;width:100%;background:#2e3745;display:block;z-index:2000;text-align:center;}
+#vue .welcome .center{max-width:300px;margin:auto;margin-top:140px;}
+#vue .welcome .center .logo{display:block;max-width:80px;margin:auto;margin-bottom:20px;}
+#vue .welcome .center .captcha{height:80px;}
+#vue .welcome .login-form > div{margin-bottom:10px;}
+#vue.app .welcome{display:none;}
+
+#vue:not(.app){overflow:hidden;}
+#vue:not(.app) .login-form{display:none;}
+#vue.login .message{position:absolute;max-width:300px;animation:transition-out .4s ease-out;animation-fill-mode: forwards;}
+#vue.login .login-form{display:block;animation:transition-in .4s ease-out;animation-fill-mode: forwards;}
 
 webview.plusdede{width:100%;height:400px;}
 webview.plusdede.background{position:absolute;top:0;left:0;z-index:-1;}
