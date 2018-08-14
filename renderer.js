@@ -91,7 +91,7 @@
 			});
 		},
 		'parse_login': function(){
-			document.body.classList.add('login');
+			document.querySelector('#vue').classList.add('login');
 
 			webview.getWebContents().executeJavaScript(`
 				new Promise(function(resolve, reject) {
@@ -334,6 +334,7 @@
 
 
 	webview.addEventListener('dom-ready', () => {
+_plusdede.frame_show();
 		//alert(!!webview.src.match(/plusdede\.com\/series\/following/));
 		switch (true) {
 			case !!webview.src.match(/plusdede\.com\/series\/following/):
