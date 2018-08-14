@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>V-for-viewer</title>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
+		<link href="css/v.css" type="text/css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script type="text/javascript" src="widgets/widget.tabs.js"></script>
+	</head>
+  <body>
+	<div id="vue">
+		<aside>
+			<div class="logo">
+				<img src="images/logo.png">
+				<h1>V for Viewers</h1>
+			</div>
+			<nav>
+				<div class="nav-serials" v-on:click="load_serials" v-bind:class="{ active: menu === 'serials' }">Series</div>
+				<div class="nav-films"   v-on:click="load_films"   v-bind:class="{ active: menu === 'films' }">Películas</div>
+			</nav>
+		</aside>
+		<main>
+			<div class="login">
+				<div class="center">
+					<img class="logo" src="images/logo.png">
+					<div class="error"></div>
+					<div><input type="text" name="user" placeholder="example@mail.com"></div>
+					<div><input type="password" name="pass" placeholder="password"></div>
+					<div class="captcha"></div>
+					<div><input type="text" name="captcha" placeholder="captcha"></div>
+					<button>Entrar</button>
+				</div>
+			</div>
+			<div class="v-ribbon" v-html="ribbon" v-bind:class="{ 'ribbon-in': ribbon !== '','ribbon-out': ribbon === '' }"></div>
+			<div class="v-player">
+				<!--<video class="v-player" src="http://iandevlin.github.io/mdn/video-player/video/tears-of-steel-battle-clip-medium.mp4"></video>-->
+				<video class="v-player" src=""></video>
+				<div class="controls">
+					<div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>
+					<progress class="progress" value="60" min="0" max=100></progress>
+				</div>
+			</div>
+			<div class="v-header flex">
+				<span class="search grow">
+					<i class="fa fa-search" aria-hidden="true"></i>
+					<input type="text" name="search" placeholder="Search movies, serials">
+				</span>
+				<span>{{ username }}</span>
+			</div>
+			<div class="v-view">
+				<div class="template-titles" v-bind:class="{ hidden: view !== 'titles' }">
+					<div class="flex grid wrap v-grid">
+						<div class="poster-node media-node1" v-for="title in titles">
+							<div class="navigate" v-bind:data-href="title.url"><img v-bind:src="title.src"></div>
+							<div>
+								<span class="rating">{{ title.rate }}</span>
+								<span class="year">{{ title.year }}</span>
+							</div>
+							<div><strong class="navigate" data-href1="{{ title.url }}">{{ title.name }}</strong></div>
+							<!--<div>{{#genres}}{{.}}{{/genres}}</div>-->
+						</div>
+					</div>
+				</div>
+				<div class="template-media" v-bind:class="{ hidden: view !== 'media' }">
+					<div class="flex">
+						<div class="poster-node">
+							<div><img v-bind:src="media.src"></div>
+							<!--<div><strong>{{ media.name }}</strong></div>-->
+							<!--<div>{{#genres}}{{.}}{{/genres}}</div>-->
+						</div>
+						<div class="content grow">
+							<h1>{{ media.name }}</h1>
+							<div class="description">{{ media.description }}</div>
+						</div>
+					</div>
+					<div class="flex">
+						<ul class="table align-top">
+							<li v-for="server in media.servers">
+								<div>{{ server.lang }}</div>
+								<div><a class="navigate" v-bind:data-href="server.url">{{ server.portal }}</a></div>
+								<div>{{ server.quality }}</div>
+							</li>
+						</ul>
+					</div>
+					<div class="flex">
+						<ul class="tabs widget-tabs">
+							<li class="tab" v-for="season in media.seasons" v-bind:class="{ active: season.active }">
+								<div class="label">
+									<span class="ellipsis">Temporada {{ season.season }}</span>
+								</div>
+								<div class="content">
+									<ul class="table align-top">
+										<li v-for="episode in season.episodes">
+											<div>{{ episode.num }}</div>
+											<div>
+												<div class="flex">
+													<span class="grow navigate" v-bind:data-href="episode.url">{{ episode.name }}</span>
+													<span class="op-episode-set" v-bind:data-id="episode.id" data-seen="{{ episode.seen }}">
+														<i class="fa fa-check-circle" v-bind:class="{ green: episode.seen }" aria-hidden="true"></i>
+													</span>
+												</div>
+												<div class="episode-description"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<webview class="player"></webview>
+			<webview class="plusdede background"></webview>
+		</main>
+	</div>
+	<script>
+		var _vue = new Vue({
+			el: '#vue',
+			data: {
+				username: '',
+				menu: false,
+				ribbon: '',
+				view: '',
+				titles: [],
+				media: {
+					src: '',
+					name: '',
+					description: '',
+					seasons: [],
+					servers: []
+				}
+			},
+			methods: {
+				'media_reset': function(t){
+					//FIXME: 
+					this.media.src = '';
+					this.media.seasons = [];
+					this.media.servers = [];
+				},
+				'load_serials': function(){
+					_app.load_serials_following();
+				},
+				'load_films': function(){
+					_app.load_films();
+				}
+			}
+		});
+
+		// You can also require other files to run in this process
+		var _app = require('./app.js');
+		var _fs = require('fs');
+		var wplayer = require('./player.js');
+
+		var _view = document.querySelector('div.v-view');
+		require('./renderer.js');
+	</script>
+  </body>
+</html>

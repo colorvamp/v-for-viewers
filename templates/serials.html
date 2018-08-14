@@ -1,0 +1,13 @@
+	<div class="flex grid wrap v-grid">
+		{{#media}}
+		<div class="poster-node media-node1">
+			<div class="navigate" data-href="{{url}}"><img src="{{src}}"></div>
+			<div>
+				<span class="rating">{{rate}}</span>
+				<span class="year">{{year}}</span>
+			</div>
+			<div><strong class="navigate" data-href1="{{url}}">{{name}}</strong></div>
+			<div>{{#genres}}{{.}}{{/genres}}</div>
+		</div>
+		{{/media}}
+	</div>

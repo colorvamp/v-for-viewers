@@ -1,0 +1,21 @@
+{
+  "name": "v-for-viewers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/sombra2eternity/v-for-viewers",
+  "keywords": [
+    "viewers"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.8.4"
+  },
+  "dependencies": {
+    "mustache": "^2.3.0"
+  }
+}
