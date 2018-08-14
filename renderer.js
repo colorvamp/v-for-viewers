@@ -59,8 +59,10 @@
 						});
 					});
 
-					var content = _fs.readFileSync('templates/serials.html', 'utf8');
-					_view.innerHTML = _mustache.render(content, {'media':_media});
+					//var content = _fs.readFileSync('templates/serials.html', 'utf8');
+					//_view.innerHTML = _mustache.render(content, {'media':_media});
+					_vue.view = 'titles';
+					_vue.titles = _media;
 				}
 			}).catch((error) => console.log(error));
 		},
