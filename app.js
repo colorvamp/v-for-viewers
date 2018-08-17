@@ -54,11 +54,22 @@
 		this.delay = setTimeout(function(){
 			if (this._search.getAttribute('data-criteria') == criteria) {return false;}
 
-			/* Establecemos el útimo término de búsqueda, si no ha
+			/* Establecemos el último término de búsqueda, si no ha
 			 * cambiado no es necesario buscar de nuevo */
 			this._search.setAttribute('data-criteria',criteria);
 			_plusdede.do_search(criteria);
 		}.bind(this),600);
+	};
+	_app.prototype.do_title_status = function(id,status){
+		if (['pending','following','seen','favorite','nothing'].indexOf(status) < 0) {return false;}
+		if ($is.element(id) && !(id = id.getAttribute('data-id'))) {return false;}
+		return new Promise(function(resolve, reject) {
+			_plusdede.do_title_status(id,status).then(function(res){
+				//FIXME: 
+				//alert(res);
+				resolve({});
+			}).catch(reject);
+		});
 	};
 	_app.prototype.do_episode_set = function(elem){
 		var id = false;

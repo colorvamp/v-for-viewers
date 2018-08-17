@@ -92,6 +92,38 @@
 				});
 			});
 		},
+		'do_title_status': function(id,status){
+			return new Promise(function(resolve, reject) {
+				webview.getWebContents().executeJavaScript(`
+					new Promise(function(resolve, reject) {
+						var _meta = document.querySelector('meta[name="_token"]');
+						var _dropdown = document.querySelector('.media-dropdown.dropdown.model[data-value][data-model][data-id]');
+						if (!_dropdown) {return reject('ELEMENT_NOT_FOUND');}
+
+						var _url = 'https://www.plusdede.com/set/usermedia/'
+						 + _dropdown.getAttribute('data-model') + '/'
+						 + _dropdown.getAttribute('data-id') + '/'
+						 + '${status}';
+						var req = new XMLHttpRequest();
+						req.open('POST', _url, false);
+						req.setRequestHeader('x-requested-with', 'XMLHttpRequest');
+						req.setRequestHeader('authority', 'www.plusdede.com');
+						req.setRequestHeader('x-csrf-token', _meta.getAttribute('content'));
+						req.send('');
+						if (req.status == 200){
+							resolve(req.responseText);
+						} else {
+							reject(req.status);
+						}
+					});
+				`).then((res) => {
+					resolve(res);
+				}).catch((error) => {
+					console.log(error);
+					reject(error);
+				});
+			});
+		},
 		'parse_login': function(){
 			document.querySelector('#vue').classList.add('login');
 
@@ -176,6 +208,7 @@
 		'parse_media': function(){
 			webview.getWebContents().executeJavaScript(`
 				new Promise(function(resolve, reject) {
+					var _id     = document.querySelector('.media-dropdown.dropdown.model[data-value][data-model][data-id]');
 					var _image  = document.querySelector('.medium-avatar-container > img');
 					var _name   = document.querySelector('.content h1.big-title');
 					var _genres = document.querySelector('genre-container > ul > li');
@@ -223,7 +256,9 @@
 
 
 					resolve({
-						 'src':_image.src
+						 'id':_id.getAttribute('data-id')
+						,'status':_id.getAttribute('data-value')
+						,'src':_image.src
 						,'name':_name.innerHTML
 						,'description':_description.innerText
 						,'seasons':_seasons
@@ -249,11 +284,14 @@
 				}
 
 				_vue.view = 'media';
+				_vue.media.id          = res.id;
+				_vue.media.status      = res.status;
 				_vue.media.src         = res.src;
 				_vue.media.name        = res.name;
 				_vue.media.seasons     = res.seasons;
 				_vue.media.links       = res.links;
 				_vue.media.description = res.description;
+				_vue.media.type        = res.seasons.length ? 'serial' : 'film';
 			}).catch((error) => console.log(error));
 		},
 		'parse_links': function(){

@@ -3,10 +3,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>V-for-viewer</title>
+		<link href="images/logo.16.png" sizes="16x16" type="image/png" rel="icon">
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
 		<link href="css/v.css" type="text/css" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script src="https://unpkg.com/http-vue-loader"></script>
 		<script type="text/javascript" src="widgets/widget.tabs.js"></script>
 	</head>
   <body>
@@ -69,7 +72,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="template-media" v-bind:class="{ hidden: view !== 'media' }">
+				<!--<div class="template-media" v-bind:class="{ hidden: view !== 'media' }">-->
+				<template v-if="view === 'media'">
 					<div class="flex">
 						<div class="poster-node">
 							<div><img v-bind:src="media.src"></div>
@@ -78,6 +82,13 @@
 						</div>
 						<div class="content grow">
 							<h1>{{ media.name }}</h1>
+							<div v-if="media.type == 'serial'">
+								<dropdown	:options="dropdown_media_status" 
+										:selected="media.status" 
+										v-on:update="serial_status"
+										v-bind:data-id="media.id">
+								</dropdown>
+							</div>
 							<div class="description">{{ media.description }}</div>
 						</div>
 					</div>
@@ -115,7 +126,7 @@
 							</li>
 						</ul>
 					</div>
-				</div>
+				</template>
 			</div>
 			<webview class="player"></webview>
 			<webview class="plusdede background"></webview>
@@ -131,12 +142,19 @@
 				view: 'welcome',
 				titles: [],
 				media: {
+					type: false,
+					id: false,
+					status: false,
 					src: '',
 					name: '',
 					description: '',
 					seasons: [],
 					servers: []
-				}
+				},
+				dropdown_media_status: [
+					{id:'following',name:"Following"},
+					{id:'nothing',name:"Not Following"}
+				]
 			},
 			methods: {
 				'media_reset': function(t){
@@ -150,7 +168,16 @@
 				},
 				'load_films': function(){
 					_app.load_films();
+				},
+				'serial_status': function(event,payload) {
+					//this.object = payload;
+					_app.do_title_status(event.target,payload.id);
+					event.waitUntil(_app.do_title_status(event.target,payload.id));
 				}
+			},
+			components: {
+				'dropdown': httpVueLoader('widgets/dropdown.vue'),
+				'my-component': httpVueLoader('widgets/my-component.vue')
 			}
 		});
 
@@ -161,6 +188,10 @@
 
 		var _view = document.querySelector('div.v-view');
 		require('./renderer.js');
+
+		var $is = {
+			element:  function (o) {return ('nodeType' in o && o.nodeType === 1 && 'cloneNode' in o);}
+		}
 	</script>
   </body>
 </html>
