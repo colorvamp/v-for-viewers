@@ -357,6 +357,7 @@
 			}).catch((error) => console.log(error));
 		},
 		'parse_link': function(){
+console.log('parse_link');
 			webview.getWebContents().executeJavaScript(`
 				new Promise(function(resolve, reject) {
 					var _url = document.querySelector('.visit-buttons > a[target="_blank"]');
@@ -393,6 +394,7 @@
 				break;
 			case !!webview.src.match(/plusdede.com\/aportes\/[^\/]+$/):
 				_plusdede.parse_link();
+				break;
 			case !!webview.src.match(/plusdede.com\/login/):
 				_plusdede.parse_login();
 				break;
